@@ -53,3 +53,55 @@ get_users <- function(org, user_type = c("members", "outside_collaborators")) {
     tidyr::hoist(.data$member, username = "login")
 
 }
+
+#' Organisation users to follow up
+#'
+#' @description Find organisation users who either do not have a public email
+#' address or are outside collaborations.
+#'
+#' @inheritParams users
+#' @param return Either "detail" to return a row for each user, or "summary" to
+#' return a summary of number of users per type of issue.
+#'
+#' @return A tibble.
+#' @export
+#'
+#' @examples
+#' users_follow_up("ScotGovAnalysis")
+
+users_follow_up <- function(
+    org,
+    user_type = c("all", "members", "outside_collaborators"),
+    return = c("detail", "summary")
+) {
+
+  return <- rlang::arg_match(return)
+
+  follow_up <-
+    users(org, user_type) %>%
+    dplyr::mutate(issue = dplyr::case_when(
+        .data$type == "outside_collaborators" ~ "outside_collaborator",
+        is.na(.data$email) ~ "email_missing",
+        .default = "no_issue"
+    ))
+
+  if (return == "detail") {
+    return(dplyr::filter(follow_up, .data$issue != "no_issue"))
+  }
+
+  if (return == "summary") {
+    return(
+      follow_up %>%
+        dplyr::group_by(.data$issue) %>%
+        dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+        dplyr::mutate(sort = dplyr::case_match(
+          .data$issue,
+          "no_issue" ~ 2,
+          .default = 1
+        )) %>%
+        dplyr::arrange(.data$sort) %>%
+        dplyr::select(-"sort")
+    )
+  }
+
+}
