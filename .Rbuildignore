@@ -1,3 +1,4 @@
 ^ghadmin\.Rproj$
 ^\.Rproj\.user$
 ^LICENCE\.md$
+^scripts/*$
