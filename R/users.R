@@ -26,7 +26,7 @@ users <- function(org,
     purrr::list_rbind() %>%
     tidyr::hoist(.data$member, "site_admin") %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(public_info = list(gh::gh("GET /users/{username}",
+    dplyr::mutate(public_info = list(gh::gh("/users/{username}",
                                             username = .data$username,
                                             .limit = Inf))) %>%
     dplyr::ungroup() %>%
@@ -46,7 +46,7 @@ get_users <- function(org, user_type = c("members", "outside_collaborators")) {
 
   dplyr::tibble(
     type = user_type,
-    member = gh::gh("GET /orgs/{org}/{user_type}",
+    member = gh::gh("/orgs/{org}/{user_type}",
       org = org,
       user_type = user_type,
       .limit = Inf
