@@ -27,5 +27,7 @@ Find organisation users who either do not have a public email
 address or are outside collaborations.
 }
 \examples{
+\dontrun{
 users_follow_up("ScotGovAnalysis")
+}
 }

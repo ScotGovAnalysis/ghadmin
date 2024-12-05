@@ -19,5 +19,7 @@ A tibble.
 Organisation users
 }
 \examples{
+\dontrun{
 users("ScotGovAnalysis")
+}
 }

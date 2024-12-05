@@ -9,7 +9,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' users("ScotGovAnalysis")
+#' }
 
 users <- function(org,
                   user_type = c("all", "members", "outside_collaborators")) {
@@ -67,7 +69,9 @@ get_users <- function(org, user_type = c("members", "outside_collaborators")) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' users_follow_up("ScotGovAnalysis")
+#' }
 
 users_follow_up <- function(
     org,
