@@ -10,7 +10,7 @@ users(org, user_type = c("all", "members", "outside_collaborators"))
 \item{org}{String. Name of GitHub organisation}
 
 \item{user_type}{One of "all", "member", or "outside" (for outside
-collaborators). Defauls to "all".}
+collaborators). Defaults to "all".}
 }
 \value{
 A tibble.
@@ -19,7 +19,5 @@ A tibble.
 Organisation users
 }
 \examples{
-\dontrun{
-users("ScotGovAnalysis")
-}
+\dontrun{users("ScotGovAnalysis")}
 }
