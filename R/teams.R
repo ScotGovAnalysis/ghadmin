@@ -90,13 +90,13 @@ team_members <- function(org, team) {
     )
 
   if (nrow(members) > 0) {
-    tidyr::hoist(members, .data$members, member = "login") %>%
+    tidyr::hoist(members, .data$members, user = "login") %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
       resp = list(gh::gh("/orgs/{org}/teams/{team}/memberships/{username}",
                          org = org,
                          team = team,
-                         username = .data$member))
+                         username = .data$user))
     ) %>%
     dplyr::ungroup() %>%
     tidyr::hoist(.data$resp, "state", "role") %>%
