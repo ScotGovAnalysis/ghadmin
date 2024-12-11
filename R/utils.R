@@ -10,3 +10,9 @@ check_length <- function(x,
   }
 
 }
+
+possibly_hoist <- function(..., otherwise = NULL) {
+
+  purrr::possibly(tidyr::hoist, otherwise)(...)
+
+}
