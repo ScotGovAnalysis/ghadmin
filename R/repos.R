@@ -100,7 +100,7 @@ repo_contrib <- function(owner, repo) {
           .data$contrib,
           user = "login",
           "contributions",
-          otherwise = dplyr::tibble(name = repo,
+          otherwise = dplyr::tibble(repo = repo,
                                     user = NA_character_,
                                     contributions = NA_real_)
         ) %>%
