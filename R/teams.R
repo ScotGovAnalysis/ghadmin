@@ -11,6 +11,8 @@
 
 teams <- function(org) {
 
+  check_length(org, 1)
+
   dplyr::tibble(teams = gh::gh("/orgs/{org}/teams",
                                org = org,
                                .limit = Inf)) %>%
