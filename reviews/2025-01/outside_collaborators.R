@@ -37,7 +37,7 @@ outside_users <-
 # What repositories do they have access to and/or have contributed to?
 outside_repos <-
   repo_use %>%
-  filter(user %in% outside$user) %>%
+  filter(user %in% outside_users$user & !is.na(role)) %>%
   arrange(tolower(user))
 
 # Who are the admins of repos with outside collaborators?
@@ -47,7 +47,7 @@ outside_admins <-
            role == "admin") %>%
   mutate(member_type = case_when(
     user %in% c("alice-hannah", "tomwilsonsco") ~ "org_admin",
-    user %in% outside$user ~ "outside_collaborator"
+    user %in% outside_users$user ~ "outside_collaborator"
   )) %>%
   arrange(repo)
 
