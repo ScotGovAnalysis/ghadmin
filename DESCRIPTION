@@ -12,6 +12,7 @@ Imports:
     cli,
     dplyr,
     gh,
+    httr2,
     lubridate,
     magrittr,
     purrr,

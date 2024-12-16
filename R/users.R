@@ -49,3 +49,31 @@ users <- function(org,
     ) %>%
     dplyr::select(-c("member", "public_info"))
 }
+
+
+#' Check if GitHub user is an organisation member
+#'
+#' @inheritParams users
+#' @param user String. GitHub user name.
+#'
+#' @return Logical.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{check_member("scotgovanalysis", "alice-hannah")}
+
+check_member <- function(org, user) {
+
+  gh_safe <- purrr::safely(gh::gh)
+
+  resp <- gh_safe("/orgs/{org}/members/{username}",
+                  org = org,
+                  username = user)
+
+  status <- httr2::last_response() %>% httr2::resp_status()
+
+  if (status %in% c(302, 404)) return(FALSE)
+  if (status == 204) return(TRUE)
+
+}
