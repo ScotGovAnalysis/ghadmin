@@ -2,6 +2,7 @@
 
 export(add_team_member)
 export(check_member)
+export(issue_number)
 export(issues)
 export(repo_access)
 export(repo_contrib)

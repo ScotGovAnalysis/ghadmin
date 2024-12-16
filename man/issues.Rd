@@ -2,9 +2,18 @@
 % Please edit documentation in R/issues.R
 \name{issues}
 \alias{issues}
+\alias{issue_number}
 \title{Repository issues}
 \usage{
-issues(owner, repo, state = c("open", "closed", "all"), labels = NULL)
+issues(
+  owner,
+  repo,
+  state = c("open", "closed", "all"),
+  labels = NULL,
+  tasks = FALSE
+)
+
+issue_number(owner, repo, issue_number, tasks = FALSE)
 }
 \arguments{
 \item{owner}{String. Repository owner (e.g. organisation or user profile).}
@@ -15,6 +24,12 @@ issues(owner, repo, state = c("open", "closed", "all"), labels = NULL)
 "open" (default), "closed" or "all".}
 
 \item{labels}{Optional. Character vector of labels to filter issues by.}
+
+\item{tasks}{Logical. If \code{TRUE}, the returned tibble will contain a row for
+each task in each issue. If \code{FALSE}, one row per issue will be returned with
+no task detail.}
+
+\item{issue_number}{Numeric. Issue number to return.}
 }
 \value{
 A tibble.
@@ -23,5 +38,8 @@ A tibble.
 Repository issues
 }
 \examples{
-\dontrun{issues("scotgovanalysis", "ghadmin")}
+\dontrun{
+issues("scotgovanalysis", "ghadmin")
+issue_number("scotgovanalysis", "ghadmin", 1)
+}
 }
