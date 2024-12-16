@@ -109,3 +109,40 @@ team_members <- function(org, team) {
   }
 
 }
+
+
+#' Add member to an organisation team
+#'
+#' @inheritParams team_repos
+#' @param user String. GitHub username of member.
+#'
+#' @return Logical (invisibly).
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{add_team_member("scotgovanalysis", "test-team", "alice-hannah")}
+
+add_team_member <- function(org, team, user) {
+
+  if (!check_member(org, user)) {
+    cli::cli_abort(
+      "{user} is not a member of the {org} organisation."
+    )
+  }
+
+  resp <-
+    gh::gh("/orgs/{org}/teams/{team_slug}/memberships/{username}",
+           org = org,
+           team_slug = team,
+           username = user,
+           .method = "PUT")
+
+  if (resp$role == "member") {
+    cli::cli_inform(c(
+      "i" = "{user} has been added to the {team} team."
+    ))
+    return(invisible(TRUE))
+  }
+
+}
