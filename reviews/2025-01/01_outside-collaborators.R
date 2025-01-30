@@ -1,6 +1,6 @@
-# Analysis of outside collaborators
+# Name: 01_outside-collaborators.R
+# Desc: Analysis of outside collaborators
 # Date: December 2024
-
 
 # 0 - Load packages ----
 
@@ -61,14 +61,14 @@ list_data <- list(users  = outside_users,
 write_rds(
   list_data,
   here("reviews", "2025-01", "data",
-       paste0(Sys.Date(),"outside-collborators.rds"))
+       paste0(Sys.Date(), "_outside-collborators.rds"))
 )
 
 # xlsx file for manual editing
 write_xlsx(
   list_data,
   here("reviews", "2025-01", "data",
-       paste0(Sys.Date(), "outside-collborators.xlsx")),
+       paste0(Sys.Date(), "_outside-collborators-to-edit.xlsx")),
   format_headers = FALSE
 )
 
