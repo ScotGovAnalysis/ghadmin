@@ -80,29 +80,22 @@ issues_util <- function(tib_resp, tasks = FALSE) {
 
 }
 
-issue_tasks <- function(body) {
+create_issue <- function(owner,
+                         repo,
+                         assign_user,
+                         body,
+                         label) {
 
-  dplyr::tibble(
-    task = stringr::str_extract_all(body, "\\[(x|\\s)\\].+")
-  ) %>%
-    tidyr::unnest_longer(.data$task) %>%
-    tidyr::separate_wider_regex(
-      .data$task,
-      c(status = "^\\[[x|\\s]\\]", "\\s", task_name = ".*$")
-    ) %>%
-    dplyr::mutate(status = dplyr::case_match(.data$status,
-                                             "[ ]" ~ "incomplete",
-                                             "[x]" ~ "complete",
-                                             .default = NA))
-
-}
-
-expand_tasks <- function(issue_tibble) {
-
-  issue_tibble %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(tasks = list(issue_tasks(.data$body))) %>%
-    dplyr::ungroup() %>%
-    tidyr::unnest_longer("tasks")
+    gh::gh(
+      "/repos/{owner}/{repo}/issues",
+      owner = owner,
+      repo = repo,
+      title = paste("Review membership -", assign_user),
+      body = body,
+      assignees = list(assign_user),
+      labels = list(label),
+      .method = "POST"
+    )
 
 }
+
