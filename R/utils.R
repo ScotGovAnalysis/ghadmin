@@ -18,32 +18,22 @@ possibly_hoist <- function(..., otherwise = NULL) {
 }
 
 
-#' Parse markdown file
+#' Knit Rmarkdown file
 #'
-#' @param md_path Character. File path of markdown file.
+#' @param rmd_path Character string of file path to Rmarkdown file.
+#' @param params List of parameters to pass to Rmd file.
 #'
-#' @return Character string of markdown content.
+#' @return Character string of Rmarkdown content.
 #'
 #' @export
 #'
 #' @examples
-#' \dontrun{parse_md(here("confirm-membership.md"))}
+#' \dontrun{
+#' knit_rmd(here("confirm-membership.Rmd"), list(date = "1 March 2025"))
+#' }
 
-parse_md <- function(md_path) {
+knit_rmd <- function(rmd_path, params) {
 
-  if (tools::file_ext(md_path) != "md") {
-    cli::cli_abort(c(
-      "x" = "{.arg md_path} must be a .md file.",
-      "i" = "Supplied {.arg md_path} is a .{tools::file_ext(md_path)} file."
-    ))
-  }
-
-  if (!file.exists(md_path)) {
-    cli::cli_abort(
-      "File does not exist at {.file {md_path}}."
-    )
-  }
-
-  readLines(con = md_path) %>% paste(collapse = "\n")
+  knitr::knit_child(rmd_path, envir = environment(), quiet = TRUE)
 
 }

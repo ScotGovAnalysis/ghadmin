@@ -13,6 +13,7 @@ Imports:
     dplyr,
     gh,
     httr2,
+    knitr,
     lubridate,
     magrittr,
     purrr,
