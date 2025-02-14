@@ -84,7 +84,7 @@ expand_tasks <- function(issue_tibble) {
     dplyr::mutate(
       task = stringr::str_extract_all(.data$body, "[\n\r]- \\[(x|\\s)\\].+")
     ) %>%
-    tidyr::unnest_longer(.data$task) %>%
+    tidyr::unnest_longer("task", keep_empty = TRUE) %>%
     dplyr::mutate(task = stringr::str_remove(.data$task, "^[\n\r]-\\s")) %>%
     tidyr::separate_wider_regex(
       .data$task,
