@@ -5,13 +5,7 @@
 \alias{issue_number}
 \title{Repository issues}
 \usage{
-issues(
-  owner,
-  repo,
-  state = c("open", "closed", "all"),
-  labels = NULL,
-  tasks = FALSE
-)
+issues(owner, repo, state = c("open", "closed", "all"), labels = NULL)
 
 issue_number(owner, repo, issue_number, tasks = FALSE)
 }
@@ -25,11 +19,11 @@ issue_number(owner, repo, issue_number, tasks = FALSE)
 
 \item{labels}{Optional. Character vector of labels to filter issues by.}
 
+\item{issue_number}{Numeric. Issue number to return.}
+
 \item{tasks}{Logical. If \code{TRUE}, the returned tibble will contain a row for
 each task in each issue. If \code{FALSE}, one row per issue will be returned with
 no task detail.}
-
-\item{issue_number}{Numeric. Issue number to return.}
 }
 \value{
 A tibble.

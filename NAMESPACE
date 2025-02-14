@@ -2,6 +2,8 @@
 
 export(add_team_member)
 export(check_member)
+export(create_issue_comment)
+export(create_review_issue)
 export(expand_tasks)
 export(issue_number)
 export(issues)

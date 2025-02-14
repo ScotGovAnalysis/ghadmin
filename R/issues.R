@@ -22,8 +22,7 @@
 issues <- function(owner,
                    repo,
                    state = c("open", "closed", "all"),
-                   labels = NULL,
-                   tasks = FALSE) {
+                   labels = NULL) {
 
   state <- rlang::arg_match(state)
 
@@ -41,7 +40,7 @@ issues <- function(owner,
       .limit = Inf
     )
   ) %>%
-    issues_util(tasks)
+    issues_util()
 
 }
 
@@ -64,28 +63,63 @@ issue_number <- function(owner, repo, issue_number, tasks = FALSE) {
 
 }
 
-issues_util <- function(tib_resp, tasks = FALSE) {
+issues_util <- function(response, tasks = FALSE) {
 
-  if (nrow(tib_resp) == 0) return(dplyr::tibble())
+  if (nrow(response) == 0) return(dplyr::tibble())
 
   tib <-
-    tib_resp %>%
-    tidyr::hoist(.data$issues, "number", "state", "title", "body", "labels") %>%
-    tidyr::unnest_longer(.data$labels) %>%
-    tidyr::hoist(.data$labels, "name") %>%
-    dplyr::group_by(dplyr::across(-c("issues", "labels", "name"))) %>%
-    dplyr::summarise(labels = list(.data$name), .groups = "drop")
+    response %>%
+    tidyr::hoist(
+      .data$issues, "number", "state", "title", "body", "labels", "assignees"
+    ) %>%
+    tidyr::unnest_longer("labels", keep_empty = TRUE) %>%
+    tidyr::unnest_longer("assignees", keep_empty = TRUE)
+
+  if (typeof(tib$labels) == "list") {
+    tib <-
+      tib %>%
+      tidyr::hoist(.data$labels, "name") %>%
+      dplyr::group_by(dplyr::across(
+        -dplyr::any_of(c("issues", "labels", "name"))
+      )) %>%
+      dplyr::summarise(labels = list(.data$name), .groups = "drop")
+  }
+
+  if (typeof(tib$assignees) == "list") {
+    tib <-
+      tib %>%
+      tidyr::hoist(.data$assignees, "login") %>%
+      dplyr::group_by(dplyr::across(
+        -dplyr::any_of(c("assignees", "login"))
+      )) %>%
+      dplyr::summarise(assignees = list(.data$login), .groups = "drop")
+  }
 
   if (tasks) expand_tasks(tib) else tib
 
 }
 
-create_issue <- function(owner,
-                         repo,
-                         assign_user,
-                         body,
-                         label) {
 
+#' Create a new issue
+#'
+#' @inheritParams repo_access
+#' @param assign_user A character vector of usernames to assign the issue to.
+#' @param body A character string to use for the body of the issue.
+#' @param label A character vector of labels to add to the issue.
+#' @param issue_number Number of issue to add a comment to.
+#'
+#' @return API response (invisibly). If the action has been successful, a
+#'  success message is printed to the console.
+#'
+#' @export
+
+create_review_issue <- function(owner,
+                                repo,
+                                assign_user,
+                                body,
+                                label) {
+
+  response <-
     gh::gh(
       "/repos/{owner}/{repo}/issues",
       owner = owner,
@@ -96,6 +130,38 @@ create_issue <- function(owner,
       labels = list(label),
       .method = "POST"
     )
+
+  cli::cli_bullets(c(
+    "v" = "Issue #{response$number} created for {.val {assign_user}}."
+  ))
+
+  invisible(response)
+
+}
+
+#' @export
+#' @rdname create_review_issue
+
+create_issue_comment <- function(owner,
+                                 repo,
+                                 issue_number,
+                                 body) {
+
+  response <-
+    gh::gh(
+      "/repos/{owner}/{repo}/issues/{issue_number}/comments",
+      owner = owner,
+      repo = repo,
+      issue_number = issue_number,
+      body = body,
+      .method = "POST"
+    )
+
+  cli::cli_bullets(c(
+    "v" = "Comment posted to issue #{issue_number}."
+  ))
+
+  invisible(response)
 
 }
 
