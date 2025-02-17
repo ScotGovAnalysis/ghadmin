@@ -100,52 +100,79 @@ issues_util <- function(response, tasks = FALSE) {
 }
 
 
-#' Create a new issue
+#' Create a new issue for membership review
 #'
 #' @inheritParams repo_access
-#' @param assign_user A character vector of usernames to assign the issue to.
-#' @param body A character string to use for the body of the issue.
+#' @param assign_user A character string of the username to assign the issue to.
+#' @param body_template A character string of the file path to Rmd template.
+#' @param deadline A character string to include as deadline to respond; e.g.
+#'  "Friday 28 February".
 #' @param label A character vector of labels to add to the issue.
 #' @param issue_number Number of issue to add a comment to.
 #'
-#' @return API response (invisibly). If the action has been successful, a
-#'  success message is printed to the console.
+#' @return If the API call is successful, a tibble containing `owner`, `repo`,
+#'  `user`, `issue_number` and for `member_review_reminder`, `reminder_issued`.
 #'
 #' @export
 
-create_review_issue <- function(owner,
+member_review_issue <- function(owner,
                                 repo,
                                 assign_user,
-                                body,
+                                body_template,
+                                deadline,
                                 label) {
 
-  response <-
+  check_arg(owner)
+  check_arg(repo)
+  check_arg(assign_user)
+  check_arg(body_template)
+  check_arg(deadline)
+
+  response1 <-
     gh::gh(
       "/repos/{owner}/{repo}/issues",
       owner = owner,
       repo = repo,
       title = paste("Review membership -", assign_user),
-      body = body,
-      assignees = list(assign_user),
       labels = list(label),
       .method = "POST"
     )
 
-  cli::cli_bullets(c(
-    "v" = "Issue #{response$number} created for {.val {assign_user}}."
-  ))
+  url <- glue::glue(
+    "https://github.com/login?",
+    "return_to=https://github.com/{owner}/{repo}/issues/{response1$number}"
+  )
 
-  invisible(response)
+  response2 <-
+    gh::gh(
+      "/repos/{owner}/{repo}/issues/{issue_number}",
+      owner = owner,
+      repo = repo,
+      issue_number = response1$number,
+      body = knit_rmd(
+        body_template,
+        params = list(date = deadline,
+                      issue_url = url)
+      ),
+      assignees = list(assign_user),
+      .method = "PATCH"
+    )
+
+  dplyr::tibble(owner = owner,
+                repo = repo,
+                user = assign_user,
+                issue_number = response2$number)
 
 }
 
 #' @export
-#' @rdname create_review_issue
+#' @rdname member_review_issue
 
-create_issue_comment <- function(owner,
-                                 repo,
-                                 issue_number,
-                                 body) {
+member_review_reminder <- function(owner,
+                                   repo,
+                                   issue_number,
+                                   body_template,
+                                   deadline) {
 
   response <-
     gh::gh(
@@ -153,15 +180,18 @@ create_issue_comment <- function(owner,
       owner = owner,
       repo = repo,
       issue_number = issue_number,
-      body = body,
+      body = knit_rmd(
+        body_template,
+        params = list(date = deadline)
+      ),
       .method = "POST"
     )
 
-  cli::cli_bullets(c(
-    "v" = "Comment posted to issue #{issue_number}."
-  ))
-
-  invisible(response)
+  dplyr::tibble(owner = owner,
+                repo = repo,
+                user = response$user$login,
+                issue_number = issue_number,
+                reminder_issued = TRUE)
 
 }
 
