@@ -38,31 +38,16 @@ rm(all_org_team, members_to_add)
 
 # 3 - Create member review issues ----
 
-create_review_issue(
-  owner = "scotgovanalysis",
-  repo = "ahtest",
-  assign_user = "alice-hannah",
-  body = knit_rmd(
-    here("reviews", "2025-01", "templates", "confirm-membership.Rmd"),
-    params = list(date = "Friday 28 March")
-  ),
-  label = "2025-review"
-)
-
-# walk(
-#   all_members$user,
-#   \(user) {
-#     create_review_issue(
-#       owner = "scotgovanalysis",
-#       repo = "ahtest",
-#       assign_user = user,
-#       body = parse_md(
-#         here("reviews", "2025-01", "templates", "confirm-membership.md")
-#       ),
-#       label = "2025-review"
-#     )
-#   }
-# )
+review_issues <-
+  member_review_issue(
+    owner = "scotgovanalysis",
+    repo = "ahtest",
+    assign_user = "alice-hannah",
+    body_template =
+      here("reviews", "2025-01", "templates", "confirm-membership.Rmd"),
+    deadline = "Friday 28 March",
+    label = "2025-review"
+  )
 
 
 ### END OF SCRIPT ###

@@ -22,17 +22,12 @@ incomplete <-
 
 # 2 - Post reminder message ----
 
-url <- "https://github.com/ScotGovAnalysis/ahtest/issues/"
-
-create_issue_comment(
+member_review_reminder(
   "scotgovanalysis",
   "ahtest",
-  issue_number = 9,
-  body = knit_rmd(
-    here("reviews", "2025-01", "templates", "reminder.Rmd"),
-    params = list(issue_url = paste0(url, 9),
-                  date = "Friday 28 March")
-  )
+  issue_number = 25,
+  body_template = here("reviews", "2025-01", "templates", "reminder.Rmd"),
+  deadline = "Friday 28 March"
 )
 
 
