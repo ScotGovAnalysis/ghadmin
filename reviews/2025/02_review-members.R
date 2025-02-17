@@ -44,7 +44,7 @@ review_issues <-
     repo = "ahtest",
     assign_user = "alice-hannah",
     body_template =
-      here("reviews", "2025-01", "templates", "confirm-membership.Rmd"),
+      here("reviews", "2025", "templates", "confirm-membership.Rmd"),
     deadline = "Friday 28 March",
     label = "2025-review"
   )

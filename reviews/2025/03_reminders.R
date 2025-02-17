@@ -26,7 +26,7 @@ member_review_reminder(
   "scotgovanalysis",
   "ahtest",
   issue_number = 25,
-  body_template = here("reviews", "2025-01", "templates", "reminder.Rmd"),
+  body_template = here("reviews", "2025", "templates", "reminder.Rmd"),
   deadline = "Friday 28 March"
 )
 
