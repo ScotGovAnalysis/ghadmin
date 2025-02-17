@@ -14,7 +14,7 @@
 users <- function(org,
                   user_type = c("all", "members", "outside_collaborators")) {
 
-  check_length(org, 1)
+  check_arg(org, 1)
   user_type <- rlang::arg_match(user_type)
 
   if (user_type == "all") {

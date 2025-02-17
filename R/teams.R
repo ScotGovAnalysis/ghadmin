@@ -11,7 +11,7 @@
 
 teams <- function(org) {
 
-  check_length(org, 1)
+  check_arg(org, 1)
 
   dplyr::tibble(teams = gh::gh("/orgs/{org}/teams",
                                org = org,
@@ -40,8 +40,8 @@ teams <- function(org) {
 
 team_repos <- function(org, team) {
 
-  check_length(org, 1)
-  check_length(team, 1)
+  check_arg(org, 1)
+  check_arg(team, 1)
 
   repos <-
     dplyr::tibble(
@@ -79,8 +79,8 @@ team_repos <- function(org, team) {
 
 team_members <- function(org, team) {
 
-  check_length(org, 1)
-  check_length(team, 1)
+  check_arg(org, 1)
+  check_arg(team, 1)
 
   members<-
     dplyr::tibble(

@@ -1,13 +1,20 @@
-check_length <- function(x,
-                         length = 1,
-                         error_env = rlang::caller_env(),
-                         error_arg = rlang::caller_arg(x)) {
+check_arg <- function(x,
+                      length = 1,
+                      class = "character",
+                      error_env = rlang::caller_env(),
+                      error_arg = rlang::caller_arg(x)) {
 
-  if (length(x) != length) {
-    cli::cli_abort("{.arg {error_arg}} must be length {length}.")
-  } else {
-    invisible(x)
+  if (!is.null(length) & length(x) != length) {
+    cli::cli_abort("{.arg {error_arg}} must be length {length}.",
+                   call = error_env)
   }
+
+  if (!is.null(class) & class(x) != class) {
+    cli::cli_abort("{.arg {error_arg}} must be of class {class}.",
+                   call = error_env)
+  }
+
+  invisible(x)
 
 }
 
