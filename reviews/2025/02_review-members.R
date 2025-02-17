@@ -9,17 +9,12 @@ library(dplyr)
 library(stringr)
 library(purrr)
 library(here)
+library(cli)
 
 
 # 1 - Extract data for all organisation members ----
 
-all_members <-
-  users("scotgovanalysis", user_type = "members") %>%
-  mutate(email_issue = case_when(
-    is.na(email) ~ TRUE,
-    !str_detect(email, "gov\\.scot$") ~ TRUE,
-    .default = FALSE
-  ))
+all_members <- users("scotgovanalysis", user_type = "members")
 
 
 # 2 - Ensure all members in 'org-admin-all-members' team ----
@@ -39,15 +34,38 @@ rm(all_org_team, members_to_add)
 # 3 - Create member review issues ----
 
 review_issues <-
-  member_review_issue(
-    owner = "scotgovanalysis",
-    repo = "ahtest",
-    assign_user = "alice-hannah",
-    body_template =
-      here("reviews", "2025", "templates", "confirm-membership.Rmd"),
-    deadline = "Friday 28 March",
-    label = "2025-review"
-  )
+  map(
+    c("alice-hannah"),
+    \(user) {
+      member_review_issue(
+        owner = "scotgovanalysis",
+        repo = "ahtest",
+        assign_user = user,
+        body_template =
+          here("reviews", "2025", "templates", "confirm-membership.Rmd"),
+        deadline = "Friday 28 March",
+        label = "2025-review"
+      )
+    }
+  ) %>%
+  list_rbind()
+
+
+# 4 - Save summary ----
+
+review_status <- all_members %>% left_join(review_issues, by = "user")
+
+if (any(is.na(review_status$issue_number))) {
+  cli_alert_warning(paste(
+    "{sum(is.na(review_status$issue_number))} members do not have an",
+    "open member review issue."
+  ))
+}
+
+write_rds(
+  review_status,
+  here("reviews", "2025", "data", "2025_member-review.rds")
+)
 
 
 ### END OF SCRIPT ###
