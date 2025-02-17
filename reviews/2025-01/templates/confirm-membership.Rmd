@@ -1,6 +1,7 @@
 ---
 output: github_document
 params:
+  issue_url: NULL
   date: NULL
 ---
 
@@ -10,19 +11,23 @@ We are reviewing membership of the [ScotGovAnalysis GitHub organisation](https:/
 
 It is important for us to do this periodically to ensure only appropriate users have access to our repositories. For example, people may keep the same GitHub account as they move jobs but it might not be appropriate for them to remain a member of the Scottish Government organisation.
 
-To continue your membership, please review the following requirements and tick each box to confirm:
+> [!TIP]
+> **You will need to [log in and view this message on GitHub](`r params$issue_url`) to respond.**
+
+### If you want to continue being a member of ScotGovAnalysis:
+
+Please review the following requirements and tick each box to confirm:
 
 - [ ] I am a current Scottish Government employee.
 - [ ] I have reviewed and agree to adhere to the [GitHub User Responsibilities](https://scotsconnect.sharepoint.com/sites/StatisticsGroup-Org-SG/SitePages/GitHub-User-Responsibilities.aspx).
 - [ ] I would like to continue my membership of the [ScotGovAnalysis organisation](https://github.com/ScotGovAnalysis).
 
-> [!TIP]
-> **If you are viewing this message in an email, please click the link at the bottom of the email to 'view it on GitHub' to complete the form.**
-
-If you don't meet the above criteria and/or do not want to continue being an organisation member, please respond to this message to let us know.
+### If you want to stop being a member of ScotGovAnalysis:
 
 If you do not respond to this message by **`r params$date`**, we will assume you no longer need access and remove you from the organisation. You will be able to request to re-join if your circumstances change in the future.
 
+### Help
+
 If you have any questions or need any help, please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
 
-Thank you for your help and cooperation.
+Thank you for your support and cooperation.

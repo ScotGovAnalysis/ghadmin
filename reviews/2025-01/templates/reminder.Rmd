@@ -7,7 +7,15 @@ params:
 
 ## Reminder to confirm your organisation membership
 
-> [!TIP]
-> **If you are viewing this message in an email, please [view it on GitHub](`r params$issue_url`) to complete the form.**
+We recently contacted you to confirm whether you want to continue your membership of the [ScotGovAnalysis GitHub organisation](https://github.com/ScotGovAnalysis). 
 
-Reminder text - reply by `r params$date`.
+If you want to continue being a member, please follow the instructions in the [GitHub issue you have been assigned to](`r params$issue_url`). 
+
+> [!TIP]
+> **You will need to [log in and view on GitHub](`r params$issue_url`) to respond.**
+
+If you have not responded by **`r params$date`**, we will assume you no longer need access and remove you from the organisation. You will be able to request to re-join if your circumstances change in the future.
+
+If you have any questions or need any help, please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
+
+Thank you for your support and cooperation.
