@@ -53,7 +53,7 @@ n_incomplete <- function(body) {
 
 task_status <- function(body) {
   dplyr::case_when(
-    n_tasks(body) == 0 ~ "no tasks",
+    is.na(body) | n_tasks(body) == 0 ~ "no tasks",
     n_complete(body) == 0 ~ "not started",
     n_complete(body) == n_tasks(body) ~ "complete",
     n_complete(body) > 0 ~ "in progress"
