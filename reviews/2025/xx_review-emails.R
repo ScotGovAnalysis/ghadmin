@@ -1,11 +1,10 @@
-# Name: 05_review-emails.R
+# Name: xx_review-emails.R
 # Desc: Review members with no public email
 # Date: February 2025
 
-# 0 - Load packages ----
+# 0 - Run set up ----
 
-library(ghadmin)
-library(dplyr)
+source(here::here("reviews", "2025", "00_setup.R"))
 
 
 # 1 - Get members with no public email ----
