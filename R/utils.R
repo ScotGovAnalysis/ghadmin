@@ -25,6 +25,43 @@ possibly_hoist <- function(..., otherwise = NULL) {
 }
 
 
+#' User input to confirm opening review issues
+#'
+#' @param n_members Number of issues to be opened
+#'
+#' @return If user responds 'y', TRUE is returned invisibly. This allows
+#'  following code to run. If user responds 'n', an error will be returned. This
+#'  stops following code from running. If user responds something else, they
+#'  will be prompted to retry.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{confirm_to_continue(100)}
+
+confirm_to_continue <- function(n_members) {
+
+  response <- readline(prompt = glue::glue(
+    "Do you want to proceed to open GitHub issues for {n_members} members ",
+    "(y/n)? "
+  ))
+
+  response <- tolower(trimws(response))
+
+  if (response == "y") {
+    invisible(TRUE)
+  } else if (response == "n") {
+    cli::cli_abort(
+      "Process stopped. Issues will not be opened."
+    )
+  } else {
+    cat("Invalid input. Please enter 'y' or 'n'.\n")
+    confirm_to_continue(n_members)
+  }
+
+}
+
+
 #' Knit Rmarkdown file
 #'
 #' @param rmd_path Character string of file path to Rmarkdown file.
