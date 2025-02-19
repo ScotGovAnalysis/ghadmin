@@ -18,4 +18,4 @@ If you have not responded by **`r params$date`**, we will assume you no longer n
 
 If you have any questions or need any help, please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
 
-Thank you for your support and cooperation.
+Thank you for your support. We aimed to make this membership review as easy as possible for everyone. However, if you have suggestions for how we conduct this in future please [let me know](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).

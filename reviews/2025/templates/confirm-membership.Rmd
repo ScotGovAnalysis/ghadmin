@@ -24,10 +24,12 @@ Please review the following requirements and tick each box to confirm:
 
 ### If you want to stop being a member of ScotGovAnalysis:
 
-If you do not respond to this message by **`r params$date`**, we will assume you no longer need access and remove you from the organisation. You will be able to request to re-join if your circumstances change in the future.
+You don't need to do anything.
+
+If you do not respond to this message by **`r params$date`**, we will assume you no longer need access and remove you from the organisation. You will be able to [request to re-join](https://github.com/ScotGovAnalysis/welcome/issues/new?template=new-member-request.yml) if your circumstances change in the future.
 
 ### Help
 
 If you have any questions or need any help, please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
 
-Thank you for your support and cooperation.
+Thank you for your support. We aimed to make this membership review as easy as possible for everyone. However, if you have suggestions for how we conduct this in future please [let me know](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
