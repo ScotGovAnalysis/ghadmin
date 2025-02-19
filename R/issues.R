@@ -70,7 +70,8 @@ issues_util <- function(response, tasks = FALSE) {
   tib <-
     response %>%
     tidyr::hoist(
-      .data$issues, "number", "state", "title", "body", "labels", "assignees"
+      .data$issues,
+      "issue_number" = "number", "state", "title", "body", "labels", "assignees"
     ) %>%
     tidyr::unnest_longer("labels", keep_empty = TRUE) %>%
     tidyr::unnest_longer("assignees", keep_empty = TRUE)
