@@ -1,5 +1,5 @@
 # Name: 04_reminders.R
-# Desc: Send reminders
+# Desc: Send reminder messages
 # Date: February 2025
 
 # 0 - Run set up ----
@@ -7,23 +7,19 @@
 source(here::here("reviews", "2025", "00_setup.R"))
 
 
-# 1 - Check status of issues ----
+# 1 - Get open issues ----
 
-review_issues <-
+to_remind <-
   issues(review_params$org, review_params$repo,
-         state = "all",
+         state = "open",
          labels = review_params$label)
 
 
 # 2 - Post reminder message ----
 
-incomplete <-
-  summary %>%
-  filter(task_status %in% c("in progress", "not started"))
-
 reminders <-
   map(
-    incomplete$number,
+    to_remind$issue_number,
     \(issue_number) {
       review_reminder(
         owner = review_params$org,
