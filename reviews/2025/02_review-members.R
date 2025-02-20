@@ -32,7 +32,7 @@ confirm_to_continue(nrow(all_members))
 
 review_issues <-
   map(
-    c("alice-hannah"),
+    all_members$user,
     \(user) {
       new_review_issue(
         owner = review_params$org,
@@ -62,10 +62,9 @@ if (length(missed) > 0) {
 
 # 5 - Save summary ----
 
-write_rds(
-  review_issues,
-  here("reviews", "2025", "data", "2025_review-issues.rds")
-)
+review_issues %>%
+  mutate(complete = NA) %>%
+  write_rds(here("reviews", "2025", "data", "2025_review-issues.rds"))
 
 
 ### END OF SCRIPT ###
