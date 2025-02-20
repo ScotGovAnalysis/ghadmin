@@ -48,23 +48,23 @@ review_issues <-
   list_rbind()
 
 
-# 4 - Save summary ----
+# 4 - Check issues opened for all members ----
 
-review_status <-
-  all_members %>%
-  select(user) %>%
-  left_join(review_issues, by = "user")
+missed <- setdiff(all_members$user, review_issues$user)
 
-if (any(is.na(review_status$issue_number))) {
-  cli_alert_warning(paste(
-    "{sum(is.na(review_status$issue_number))} members do not have an",
-    "open member review issue."
+if (length(missed) > 0) {
+  cli_abort(c(
+    "{length(missed)} members do not have an open member review issue.",
+    "i" = "Run {.code print(missed)} to see which members have been missed."
   ))
 }
 
+
+# 5 - Save summary ----
+
 write_rds(
-  review_status,
-  here("reviews", "2025", "data", "2025_member-review.rds")
+  review_issues,
+  here("reviews", "2025", "data", "2025_review-issues.rds")
 )
 
 
