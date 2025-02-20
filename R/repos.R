@@ -11,7 +11,7 @@
 
 repos <- function(org) {
 
-  check_length(org, 1)
+  check_arg(org, 1)
 
   dplyr::tibble(repos = gh::gh("/orgs/{org}/repos",
                                org = org,
@@ -55,7 +55,7 @@ repos <- function(org) {
 
 repo_access <- function(owner, repo) {
 
-  check_length(owner, 1)
+  check_arg(owner, 1)
 
   purrr::map(
     repo,
@@ -84,7 +84,7 @@ repo_access <- function(owner, repo) {
 
 repo_contrib <- function(owner, repo) {
 
-  check_length(owner, 1)
+  check_arg(owner, 1)
 
   purrr::map(
     repo,

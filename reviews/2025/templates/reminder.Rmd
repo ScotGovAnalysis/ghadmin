@@ -1,0 +1,21 @@
+---
+output: github_document
+params:
+  issue_url: NULL
+  date: NULL
+---
+
+## Reminder to confirm your organisation membership
+
+We recently contacted you to confirm whether you want to continue your membership of the [ScotGovAnalysis GitHub organisation](https://github.com/ScotGovAnalysis). 
+
+If you want to continue being a member, please follow the instructions in the [GitHub issue you have been assigned to](`r params$issue_url`). 
+
+> [!TIP]
+> **You will need to [log in and view on GitHub](`r params$issue_url`) to respond.**
+
+If you have not responded by **`r params$date`**, we will assume you no longer need access and remove you from the organisation. You will be able to request to re-join if your circumstances change in the future.
+
+If you have any questions or need any help, please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
+
+Thank you for your support. We aimed to make this membership review as easy as possible for everyone. However, if you have suggestions for how we conduct this in future please [let me know](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).

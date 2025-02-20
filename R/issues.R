@@ -70,7 +70,8 @@ issues_util <- function(response, tasks = FALSE) {
   tib <-
     response %>%
     tidyr::hoist(
-      .data$issues, "number", "state", "title", "body", "labels", "assignees"
+      .data$issues,
+      "issue_number" = "number", "state", "title", "body", "labels", "assignees"
     ) %>%
     tidyr::unnest_longer("labels", keep_empty = TRUE) %>%
     tidyr::unnest_longer("assignees", keep_empty = TRUE)
@@ -100,68 +101,35 @@ issues_util <- function(response, tasks = FALSE) {
 }
 
 
-#' Create a new issue
+#' Close issue
 #'
 #' @inheritParams repo_access
-#' @param assign_user A character vector of usernames to assign the issue to.
-#' @param body A character string to use for the body of the issue.
-#' @param label A character vector of labels to add to the issue.
-#' @param issue_number Number of issue to add a comment to.
+#' @param issue_number Number of issue to close
 #'
-#' @return API response (invisibly). If the action has been successful, a
-#'  success message is printed to the console.
-#'
+#' @return A tibble.
 #' @export
+#'
+#' @examples
+#' \dontrun{close_issue("scotgovanalysis", "ghadmin", 1)}
 
-create_review_issue <- function(owner,
-                                repo,
-                                assign_user,
-                                body,
-                                label) {
+close_issue <- function(owner, repo, issue_number) {
 
-  response <-
-    gh::gh(
-      "/repos/{owner}/{repo}/issues",
-      owner = owner,
-      repo = repo,
-      title = paste("Review membership -", assign_user),
-      body = body,
-      assignees = list(assign_user),
-      labels = list(label),
-      .method = "POST"
-    )
+  check_arg(owner)
+  check_arg(repo)
+  check_arg(issue_number, class = "integer")
 
-  cli::cli_bullets(c(
-    "v" = "Issue #{response$number} created for {.val {assign_user}}."
-  ))
+  gh::gh(
+    "/repos/{owner}/{repo}/issues/{issue_number}",
+    owner = owner,
+    repo = repo,
+    issue_number = issue_number,
+    state = "closed",
+    .method = "PATCH"
+  )
 
-  invisible(response)
+  dplyr::tibble(owner = owner,
+                repo = repo,
+                issue_number = issue_number,
+                date_closed = Sys.Date())
 
 }
-
-#' @export
-#' @rdname create_review_issue
-
-create_issue_comment <- function(owner,
-                                 repo,
-                                 issue_number,
-                                 body) {
-
-  response <-
-    gh::gh(
-      "/repos/{owner}/{repo}/issues/{issue_number}/comments",
-      owner = owner,
-      repo = repo,
-      issue_number = issue_number,
-      body = body,
-      .method = "POST"
-    )
-
-  cli::cli_bullets(c(
-    "v" = "Comment posted to issue #{issue_number}."
-  ))
-
-  invisible(response)
-
-}
-

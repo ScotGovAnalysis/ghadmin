@@ -12,6 +12,7 @@ Imports:
     cli,
     dplyr,
     gh,
+    glue,
     httr2,
     knitr,
     lubridate,
@@ -19,4 +20,5 @@ Imports:
     purrr,
     rlang,
     stringr,
+    tibble,
     tidyr

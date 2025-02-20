@@ -2,23 +2,19 @@
 # Desc: Analysis of outside collaborators
 # Date: December 2024
 
-# 0 - Load packages ----
+# 0 - Run set up ----
 
-library(ghadmin)
-library(dplyr)
-library(here)
-library(readr)
-library(writexl)
+source(here::here("reviews", "2025", "00_setup.R"))
 
 
 # 1 - Repository info ----
 
-repos <- repos("scotgovanalysis")
+repos <- repos(review_params$org)
 
 repo_use <-
   full_join(
-    repo_access("scotgovanalysis", repos$repo),
-    repo_contrib("scotgovanalysis", repos$repo),
+    repo_access(review_params$org, repos$repo),
+    repo_contrib(review_params$org, repos$repo),
     by = c("repo", "user")
   ) %>%
   mutate(contributions = case_when(
@@ -32,7 +28,7 @@ repo_use <-
 
 # Who are outside collaborators?
 outside_users <-
-  users("scotgovanalysis", user_type = "outside_collaborators")
+  users(review_params$org, user_type = "outside_collaborators")
 
 # What repositories do they have access to and/or have contributed to?
 outside_repos <-
@@ -46,7 +42,7 @@ outside_admins <-
   filter(repo %in% outside_repos$repo &
            role == "admin") %>%
   mutate(member_type = case_when(
-    user %in% c("alice-hannah", "tomwilsonsco") ~ "org_admin",
+    user %in% review_params$admin ~ "org_admin",
     user %in% outside_users$user ~ "outside_collaborator"
   )) %>%
   arrange(repo)
@@ -60,15 +56,13 @@ list_data <- list(users  = outside_users,
 
 write_rds(
   list_data,
-  here("reviews", "2025-01", "data",
-       paste0(Sys.Date(), "_outside-collborators.rds"))
+  here("reviews", "2025", "data", "2025_outside-collborators.rds")
 )
 
 # xlsx file for manual editing
 write_xlsx(
   list_data,
-  here("reviews", "2025-01", "data",
-       paste0(Sys.Date(), "_outside-collborators-to-edit.xlsx")),
+  here("reviews", "2025", "data", "2025_outside-collborators-to-edit.xlsx"),
   format_headers = FALSE
 )
 
