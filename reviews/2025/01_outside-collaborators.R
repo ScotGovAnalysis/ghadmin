@@ -56,15 +56,13 @@ list_data <- list(users  = outside_users,
 
 write_rds(
   list_data,
-  here("reviews", "2025", "data",
-       paste0(Sys.Date(), "_outside-collborators.rds"))
+  here("reviews", "2025", "data", "2025_outside-collborators.rds")
 )
 
 # xlsx file for manual editing
 write_xlsx(
   list_data,
-  here("reviews", "2025", "data",
-       paste0(Sys.Date(), "_outside-collborators-to-edit.xlsx")),
+  here("reviews", "2025", "data", "2025_outside-collborators-to-edit.xlsx"),
   format_headers = FALSE
 )
 
