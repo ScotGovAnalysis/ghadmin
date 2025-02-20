@@ -28,6 +28,7 @@ validate <-
 completed <-
   github_issues %>%
   filter(issue_number %in% review_issues$issue_number &
+           labels == "2025-review" &
            task_status(body) == "complete")
 
 closed <-
