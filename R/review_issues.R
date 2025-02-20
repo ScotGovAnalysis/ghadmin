@@ -94,3 +94,71 @@ review_reminder <- function(owner,
                 date_reminded = Sys.Date())
 
 }
+
+
+#' Validate review issues
+#'
+#' @param tib A tibble containing at least the following variables:
+#'  `owner`, `repo`, `user`, `issue_number`, `date_opened`, `state`, `body`,
+#'  `labels`, `assignees`. This tibble should be created by joining the record
+#'  of review issues opened, and the latest data for these issues from GitHub.
+#' @param exp_tasks Integer of number of tasks expected to be within the issue
+#'  body.
+#' @param exp_label Character string of expected label assigned to GitHub issue.
+#'
+#' @return The rows of `tib` containing errors are returned as a tibble. If
+#'  there are no errors, NULL is returned invisibly.
+#'
+#' @export
+
+validate_review_issues <- function(tib, exp_tasks, exp_label) {
+
+  if (!tibble::is_tibble(tib)) {
+    cli::cli_abort("{.arg tib} must be a tibble.")
+  }
+
+  exp_names <- c("owner", "repo", "user", "issue_number", "date_opened",
+                 "state", "body", "labels", "assignees")
+
+  if (!all(exp_names %in% names(tib))) {
+    missing <- setdiff(exp_names, names(tib))
+    cli::cli_abort(c(
+      "{.arg tib} does not contain all expected variables.",
+      "i" = "The following variables are missing: {.var {missing}}."
+    ))
+  }
+
+  check_arg(exp_tasks, class = "numeric")
+  check_arg(exp_label)
+
+  check_tib <- tib %>%
+    dplyr::mutate(
+      issue_exists = !is.na(.data$state),
+      assignees_intact = .data$user == .data$assignees,
+      tasks_intact = n_tasks(.data$body) == exp_tasks,
+      label_intact = .data$labels == exp_label,
+      state_valid = dplyr::case_when(
+        state == "open" ~ TRUE,
+        state == "closed" & task_status(.data$body) == "complete" ~ TRUE,
+        .default = FALSE
+      ),
+      any_errors = any(!c(.data$issue_exists, .data$assignees_intact,
+                          .data$tasks_intact, .data$label_intact,
+                          .data$state_valid))
+    )
+
+  n_errors <- sum(check_tib$any_errors)
+
+  if (n_errors > 0) {
+    cli::cli_inform(c(
+      "!" = "Errors identified in {n_errors} review issue{?s}.",
+      "i" = paste("Inspect and resolve issues manually on GitHub before",
+                  "continuing.")
+    ))
+    return(check_tib %>% dplyr::filter(.data$any_errors))
+  } else {
+    cli::cli_alert_success("No errors identified.")
+    return(invisible(NULL))
+  }
+
+}
