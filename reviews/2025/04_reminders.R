@@ -25,7 +25,7 @@ reminders <-
   map(
     incomplete$number,
     \(issue_number) {
-      member_review_reminder(
+      review_reminder(
         owner = review_params$org,
         repo = review_params$repo,
         issue_number = issue_number,

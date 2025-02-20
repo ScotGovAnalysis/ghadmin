@@ -34,7 +34,7 @@ review_issues <-
   map(
     c("alice-hannah"),
     \(user) {
-      member_review_issue(
+      new_review_issue(
         owner = review_params$org,
         repo = review_params$repo,
         assign_user = user,
@@ -45,8 +45,7 @@ review_issues <-
       )
     }
   ) %>%
-  list_rbind() %>%
-  mutate(date_opened = Sys.Date())
+  list_rbind()
 
 
 # 4 - Save summary ----
