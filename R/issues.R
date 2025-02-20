@@ -116,7 +116,7 @@ close_issue <- function(owner, repo, issue_number) {
 
   check_arg(owner)
   check_arg(repo)
-  check_arg(issue_number, class = "numeric")
+  check_arg(issue_number, class = "integer")
 
   gh::gh(
     "/repos/{owner}/{repo}/issues/{issue_number}",
