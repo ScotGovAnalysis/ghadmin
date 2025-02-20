@@ -2,6 +2,7 @@
 
 export(add_team_member)
 export(check_member)
+export(close_issue)
 export(confirm_to_continue)
 export(expand_tasks)
 export(issue_number)

@@ -99,3 +99,37 @@ issues_util <- function(response, tasks = FALSE) {
   if (tasks) expand_tasks(tib) else tib
 
 }
+
+
+#' Close issue
+#'
+#' @inheritParams repo_access
+#' @param issue_number Number of issue to close
+#'
+#' @return A tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{close_issue("scotgovanalysis", "ghadmin", 1)}
+
+close_issue <- function(owner, repo, issue_number) {
+
+  check_arg(owner)
+  check_arg(repo)
+  check_arg(issue_number, class = "numeric")
+
+  gh::gh(
+    "/repos/{owner}/{repo}/issues/{issue_number}",
+    owner = owner,
+    repo = repo,
+    issue_number = issue_number,
+    state = "closed",
+    .method = "PATCH"
+  )
+
+  dplyr::tibble(owner = owner,
+                repo = repo,
+                issue_number = issue_number,
+                date_closed = Sys.Date())
+
+}
