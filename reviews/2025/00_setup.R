@@ -17,7 +17,7 @@ library(writexl)
 # 2 - Set repository details for member review ----
 
 review_params <- list(org   = "scotgovanalysis",
-                      repo  = "ahtest",
+                      repo  = "ghadmin",
                       label = "2025-review",
                       deadline = "Friday 21 March",
                       admin = c("alice-hannah", "tomwilsonsco"))
