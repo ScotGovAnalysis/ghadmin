@@ -142,9 +142,12 @@ validate_review_issues <- function(tib, exp_tasks, exp_label) {
         state == "closed" & task_status(.data$body) == "complete" ~ TRUE,
         .default = FALSE
       ),
-      any_errors = any(!c(.data$issue_exists, .data$assignees_intact,
-                          .data$tasks_intact, .data$label_intact,
-                          .data$state_valid))
+      any_errors =
+        !.data$issue_exists |
+        !.data$assignees_intact |
+        !.data$tasks_intact |
+        !.data$label_intact |
+        !.data$state_valid
     )
 
   n_errors <- sum(check_tib$any_errors)
