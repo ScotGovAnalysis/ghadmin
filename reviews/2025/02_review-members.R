@@ -39,9 +39,9 @@ review_issues <-
         repo = review_params$repo,
         assign_user = user,
         body_template =
-          here("reviews", "2025", "templates", "confirm-membership.Rmd"),
-        deadline = review_params$deadline,
-        label = review_params$label
+          here("reviews", "2025", "templates", "request-review.Rmd"),
+        label = review_params$label,
+        date = review_params$deadline
       )
     }
   ) %>%

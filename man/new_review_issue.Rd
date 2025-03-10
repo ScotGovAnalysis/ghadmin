@@ -2,12 +2,12 @@
 % Please edit documentation in R/review_issues.R
 \name{new_review_issue}
 \alias{new_review_issue}
-\alias{review_reminder}
+\alias{review_comment}
 \title{Create a new issue for membership review}
 \usage{
-new_review_issue(owner, repo, assign_user, body_template, deadline, label)
+new_review_issue(owner, repo, assign_user, body_template, label, ...)
 
-review_reminder(owner, repo, issue_number, body_template, deadline)
+review_comment(owner, repo, issue_number, body_template, ...)
 }
 \arguments{
 \item{owner}{String. Repository owner (e.g. organisation or user profile).}
@@ -18,17 +18,16 @@ review_reminder(owner, repo, issue_number, body_template, deadline)
 
 \item{body_template}{A character string of the file path to Rmd template.}
 
-\item{deadline}{A character string to include as deadline to respond; e.g.
-"Friday 28 February".}
-
 \item{label}{A character vector of labels to add to the issue.}
+
+\item{...}{Named values to pass to params of \code{body_template} Rmd.}
 
 \item{issue_number}{Number of issue to add a reminder to.}
 }
 \value{
 If the API call is successful, a tibble containing \code{owner}, \code{repo},
 \code{user}, \code{issue_number}, \code{date_opened} (for \code{new_review_issue}) and
-\code{date_reminded} (for \code{review_reminder}).
+\code{date_commented} (for \code{review_comment}).
 }
 \description{
 Create a new issue for membership review
