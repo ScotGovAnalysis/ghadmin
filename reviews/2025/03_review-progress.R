@@ -31,9 +31,12 @@ completed <-
            labels == "2025-review" &
            task_status(body) == "complete")
 
+to_close <-
+  completed %>% filter(state == "open") %>% pull(issue_number)
+
 closed <-
   map(
-    completed %>% filter(state == "open") %>% pull(issue_number),
+    to_close,
     \(issue_number) {
       close_issue(review_params$org, review_params$repo, issue_number)
     }
