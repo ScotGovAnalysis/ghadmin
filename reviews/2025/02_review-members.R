@@ -39,9 +39,9 @@ review_issues <-
         repo = review_params$repo,
         assign_user = user,
         body_template =
-          here("reviews", "2025", "templates", "confirm-membership.Rmd"),
-        deadline = review_params$deadline,
-        label = review_params$label
+          here("reviews", "2025", "templates", "request-review.Rmd"),
+        label = review_params$label,
+        date = review_params$deadline
       )
     }
   ) %>%
@@ -63,7 +63,9 @@ if (length(missed) > 0) {
 # 5 - Save summary ----
 
 review_issues %>%
-  mutate(complete = NA) %>%
+  mutate(reminder_message = lubridate::NA_Date_,
+         confirm_message = lubridate::NA_Date_,
+         complete = NA) %>%
   write_rds(here("reviews", "2025", "data", "2025_review-issues.rds"))
 
 

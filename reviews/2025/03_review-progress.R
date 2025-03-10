@@ -43,14 +43,50 @@ closed <-
   ) %>%
   list_rbind()
 
-
-# 3 - Save summary ----
-
 review_issues <-
   review_issues %>%
   mutate(
     complete = if_else(issue_number %in% completed$issue_number, TRUE, complete)
   )
+
+
+# 3 - Post confirmation message ----
+
+to_confirm <-
+  review_issues %>%
+  filter(complete & is.na(confirm_message)) %>%
+  pull(issue_number)
+
+confirmed <-
+  map(
+    to_confirm,
+    \(issue_number) {
+      review_comment(
+        owner = review_params$org,
+        repo = review_params$repo,
+        issue_number = issue_number,
+        body_template = here(
+          "reviews", "2025", "templates", "confirm-complete.Rmd"
+        )
+      )
+    }
+  ) %>%
+  list_rbind()
+
+review_issues <- if(nrow(confirmed) > 0) {
+  review_issues %>%
+    left_join(confirmed %>% select(issue_number, date_commented),
+              by = "issue_number") %>%
+    mutate(confirm_message = if_else(
+      !is.na(date_commented), date_commented, confirm_message
+    )) %>%
+    select(-date_commented)
+} else {
+  review_issues
+}
+
+
+# 4 - Save summary ----
 
 write_rds(
   review_issues,

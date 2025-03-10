@@ -1,0 +1,9 @@
+---
+output: github_document
+---
+
+## Thank you
+
+We have received your response and your membership of the [ScotGovAnalysis GitHub organisation](https://github.com/ScotGovAnalysis) will continue.
+
+We aimed to make this membership review as easy as possible for everyone. However, if you have suggestions for how we conduct this in future please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).

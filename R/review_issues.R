@@ -3,14 +3,13 @@
 #' @inheritParams repo_access
 #' @param assign_user A character string of the username to assign the issue to.
 #' @param body_template A character string of the file path to Rmd template.
-#' @param deadline A character string to include as deadline to respond; e.g.
-#'  "Friday 28 February".
+#' @param ... Named values to pass to params of `body_template` Rmd.
 #' @param label A character vector of labels to add to the issue.
 #' @param issue_number Number of issue to add a reminder to.
 #'
 #' @return If the API call is successful, a tibble containing `owner`, `repo`,
 #'  `user`, `issue_number`, `date_opened` (for `new_review_issue`) and
-#'  `date_reminded` (for `review_reminder`).
+#'  `date_commented` (for `review_comment`).
 #'
 #' @export
 
@@ -18,14 +17,13 @@ new_review_issue <- function(owner,
                              repo,
                              assign_user,
                              body_template,
-                             deadline,
-                             label) {
+                             label,
+                             ...) {
 
   check_arg(owner)
   check_arg(repo)
   check_arg(assign_user)
   check_arg(body_template)
-  check_arg(deadline)
 
   response1 <-
     gh::gh(
@@ -50,8 +48,7 @@ new_review_issue <- function(owner,
       issue_number = response1$number,
       body = knit_rmd(
         body_template,
-        params = list(date = deadline,
-                      issue_url = url)
+        params = list(..., issue_url = url)
       ),
       assignees = list(assign_user),
       .method = "PATCH"
@@ -68,11 +65,11 @@ new_review_issue <- function(owner,
 #' @export
 #' @rdname new_review_issue
 
-review_reminder <- function(owner,
-                            repo,
-                            issue_number,
-                            body_template,
-                            deadline) {
+review_comment <- function(owner,
+                           repo,
+                           issue_number,
+                           body_template,
+                           ...) {
 
   response <-
     gh::gh(
@@ -82,7 +79,7 @@ review_reminder <- function(owner,
       issue_number = issue_number,
       body = knit_rmd(
         body_template,
-        params = list(date = deadline)
+        params = list(...)
       ),
       .method = "POST"
     )
@@ -91,7 +88,7 @@ review_reminder <- function(owner,
                 repo = repo,
                 user = response$user$login,
                 issue_number = issue_number,
-                date_reminded = Sys.Date())
+                date_commented = Sys.Date())
 
 }
 
