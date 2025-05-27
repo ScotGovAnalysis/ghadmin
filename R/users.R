@@ -77,3 +77,36 @@ check_member <- function(org, user) {
   if (status == 204) return(TRUE)
 
 }
+
+
+#' Remove member from organisation
+#'
+#' @inheritParams check_member
+#'
+#' @return A tibble.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{remove_member("scotgovanalysis", "alice-hannah")}
+
+remove_member <- function(org, user) {
+
+  if (!check_member(org, user)) {
+    cli::cli_abort(
+      "{user} is not a member of {org}."
+    )
+  }
+
+  resp <- gh::gh("/orgs/{org}/memberships/{user}",
+                 org = org,
+                 user = user,
+                 .method = "DELETE")
+
+  tibble::tibble(
+    owner = org,
+    user = user,
+    date_removed = Sys.Date()
+  )
+
+}
