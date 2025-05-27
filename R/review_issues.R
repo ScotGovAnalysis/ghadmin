@@ -131,7 +131,8 @@ validate_review_issues <- function(tib, exp_tasks, exp_label) {
   check_tib <- tib %>%
     dplyr::mutate(
       issue_exists = !is.na(.data$state),
-      assignees_intact = .data$user == .data$assignees,
+      assignees_intact = !is.na(.data$assignees) &
+        .data$user == .data$assignees,
       tasks_intact = n_tasks(.data$body) == exp_tasks,
       label_intact = .data$labels == exp_label,
       state_valid = dplyr::case_when(
