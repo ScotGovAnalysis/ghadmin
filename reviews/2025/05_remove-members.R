@@ -14,7 +14,7 @@ review_issues <-
 
 to_remove <-
   review_issues %>%
-  filter(is.na(date_confirmed))
+  filter(is.na(date_confirmed) & is.na(date_removed))
 
 
 # 2 - Remove members from organisation ----
