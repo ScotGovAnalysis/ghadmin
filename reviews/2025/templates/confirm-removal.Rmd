@@ -1,0 +1,11 @@
+---
+output: github_document
+---
+
+## Confirmation of removed access to organisation
+
+As you have not responded to the membership review, we have now removed your access to the [ScotGovAnalysis GitHub organisation](https://github.com/ScotGovAnalysis).
+
+If this was a mistake and you still need access to the organisation, you can [request to re-join](https://github.com/ScotGovAnalysis/welcome/issues/new?template=new-member-request.yml).
+
+We aimed to make this membership review as easy as possible for everyone. However, if you have suggestions for how we conduct this in future please [get in touch with Alice Hannah](mailto:alice.hannah@gov.scot?subject=ScotGovAnalysis%20Membership%20Review).
