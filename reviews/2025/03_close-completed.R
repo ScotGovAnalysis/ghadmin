@@ -1,4 +1,4 @@
-# Name: 03_review-progress.R
+# Name: 03_close-completed.R
 # Desc: Check status and close completed issues
 # Date: February 2025
 
