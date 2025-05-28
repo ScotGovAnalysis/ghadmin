@@ -14,7 +14,7 @@ review_issues <-
 
 to_remove <-
   review_issues %>%
-  filter(is.na(complete))
+  filter(is.na(date_confirmed))
 
 
 # 2 - Remove members from organisation ----
@@ -51,8 +51,12 @@ closed <-
 
 review_issues <- if(nrow(removed) > 0 & nrow(closed) > 0) {
   review_issues %>%
-    left_join(removed %>% select(user, date_removed),
-              by = "user")
+    left_join(closed %>% select(issue_number, date_closed),
+              by = "issue_number") %>%
+    mutate(date_removed = if_else(
+      !is.na(date_closed), date_closed, date_removed
+    )) %>%
+    select(-date_closed)
 } else {
   review_issues
 }
@@ -60,7 +64,7 @@ review_issues <- if(nrow(removed) > 0 & nrow(closed) > 0) {
 review_issues <-
   review_issues %>%
   mutate(result = case_when(
-    complete ~ "responded",
+    !is.na(date_confirmed) ~ "responded",
     !is.na(date_removed) ~ "removed"
   ))
 
