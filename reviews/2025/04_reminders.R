@@ -9,17 +9,16 @@ source(here::here("reviews", "2025", "00_setup.R"))
 
 # 1 - Get review issues ----
 
-github_issues <- issues(
-  review_params$org,
-  review_params$repo,
-  state = "open",
-  labels = review_params$label
-)
+review_issues <-
+  read_rds(here("reviews", "2025", "data", "2025_review-issues.rds"))
 
 
 # 2 - Post reminder message ----
 
-to_remind <- github_issues %>% pull(issue_number)
+to_remind <-
+  review_issues %>%
+  filter(is.na(date_reminded) & is.na(date_confirmed)) %>%
+  pull(issue_number)
 
 reminded <-
   map(
@@ -36,15 +35,13 @@ reminded <-
   ) %>%
   list_rbind()
 
-review_issues <-
-  read_rds(here("reviews", "2025", "data", "2025_review-issues.rds"))
 
 review_issues <- if(nrow(reminded) > 0) {
   review_issues %>%
     left_join(reminded %>% select(issue_number, date_commented),
               by = "issue_number") %>%
-    mutate(reminder_message = if_else(
-      !is.na(date_commented), date_commented, reminder_message
+    mutate(date_reminded = if_else(
+      !is.na(date_commented), date_commented, date_reminded
     )) %>%
     select(-date_commented)
 } else {

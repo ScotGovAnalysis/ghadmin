@@ -63,9 +63,9 @@ if (length(missed) > 0) {
 # 5 - Save summary ----
 
 review_issues %>%
-  mutate(reminder_message = lubridate::NA_Date_,
-         confirm_message = lubridate::NA_Date_,
-         complete = NA) %>%
+  mutate(date_reminded = lubridate::NA_Date_,
+         date_confirmed = lubridate::NA_Date_,
+         date_removed = lubridate::NA_Date_) %>%
   write_rds(here("reviews", "2025", "data", "2025_review-issues.rds"))
 
 

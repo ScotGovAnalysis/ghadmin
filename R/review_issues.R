@@ -54,7 +54,7 @@ new_review_issue <- function(owner,
       .method = "PATCH"
     )
 
-  dplyr::tibble(owner = owner,
+  dplyr::tibble(org = owner,
                 repo = repo,
                 user = assign_user,
                 issue_number = response2$number,
@@ -114,7 +114,7 @@ validate_review_issues <- function(tib, exp_tasks, exp_label) {
     cli::cli_abort("{.arg tib} must be a tibble.")
   }
 
-  exp_names <- c("owner", "repo", "user", "issue_number", "date_opened",
+  exp_names <- c("org", "repo", "user", "issue_number", "date_opened",
                  "state", "body", "labels", "assignees")
 
   if (!all(exp_names %in% names(tib))) {
@@ -131,7 +131,8 @@ validate_review_issues <- function(tib, exp_tasks, exp_label) {
   check_tib <- tib %>%
     dplyr::mutate(
       issue_exists = !is.na(.data$state),
-      assignees_intact = .data$user == .data$assignees,
+      assignees_intact = !is.na(.data$assignees) &
+        .data$user == .data$assignees,
       tasks_intact = n_tasks(.data$body) == exp_tasks,
       label_intact = .data$labels == exp_label,
       state_valid = dplyr::case_when(

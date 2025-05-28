@@ -1,4 +1,4 @@
-# Name: 03_review-progress.R
+# Name: 03_close-completed.R
 # Desc: Check status and close completed issues
 # Date: February 2025
 
@@ -38,23 +38,20 @@ closed <-
   map(
     to_close,
     \(issue_number) {
-      close_issue(review_params$org, review_params$repo, issue_number)
+      close_issue(review_params$org,
+                  review_params$repo,
+                  as.numeric(issue_number))
     }
   ) %>%
   list_rbind()
-
-review_issues <-
-  review_issues %>%
-  mutate(
-    complete = if_else(issue_number %in% completed$issue_number, TRUE, complete)
-  )
 
 
 # 3 - Post confirmation message ----
 
 to_confirm <-
   review_issues %>%
-  filter(complete & is.na(confirm_message)) %>%
+  filter(issue_number %in% completed$issue_number &
+           is.na(date_confirmed)) %>%
   pull(issue_number)
 
 confirmed <-
@@ -77,8 +74,8 @@ review_issues <- if(nrow(confirmed) > 0) {
   review_issues %>%
     left_join(confirmed %>% select(issue_number, date_commented),
               by = "issue_number") %>%
-    mutate(confirm_message = if_else(
-      !is.na(date_commented), date_commented, confirm_message
+    mutate(date_confirmed = if_else(
+      !is.na(date_commented), date_commented, date_confirmed
     )) %>%
     select(-date_commented)
 } else {
