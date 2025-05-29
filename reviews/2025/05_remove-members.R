@@ -73,5 +73,9 @@ write_rds(
   here("reviews", "2025", "data", "2025_review-issues.rds")
 )
 
+write_xlsx(
+  review_issues,
+  here("reviews", "2025", "data", "2025_github-member-review.xlsx")
+)
 
 ### END OF SCRIPT ###
