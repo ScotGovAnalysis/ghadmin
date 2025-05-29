@@ -44,6 +44,8 @@ All members need to actively respond to the review to confirm that they need ong
 
 * Run `05_remove-members.R` to remove organisation membership for those who haven't responded, close remaining issues and post a confirmation message.
 
+* Save the resulting xlsx file (e.g. `data/2025_github-member-review.xlsx`) to eRDM to keep a record of the process.
+
 * Run `06_review-emails.R` to check that all remaining members have their SG email address public on their profile. This is a requirement for any new member requests and so we should ensure all existing members also meet this requirement. If able to identify individuals from usernames, contact via email to ask them to make their email public ([guidance is available in the welcome repo](welcome/make-email-public.md%20at%20main%20·%20ScotGovAnalysis/welcome)).
 
 ## Optional additional checks
