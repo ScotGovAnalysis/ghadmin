@@ -50,6 +50,8 @@ All members need to actively respond to the review to confirm that they need ong
 
 ## Optional additional checks
 
+The following checks were not carried out during the 2025 review, but may be worth considering in the future.
+
 ### Repositories
 
 The organisation repositories should be reviewed to identify:
