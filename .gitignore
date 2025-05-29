@@ -17,6 +17,5 @@
 # MS Word documents #
 *.[dD][oO][cC]*
 
-# Ad-hoc files/folders
-reviews/2025/data/
-reviews/2025/last-review/
+# HTML documents #
+*.[hH][tT][mM][lL]
