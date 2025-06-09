@@ -77,8 +77,14 @@ write_rds(
 # 5 - Create file to save to eRDM ----
 
 erdm <- list(
-  members_responded = review_issues %>% filter(result == "responded"),
-  members_removed = review_issues %>% filter(result == "removed"),
+  members_responded =
+    review_issues %>%
+    filter(result == "responded") %>%
+    select(-date_removed, -result),
+  members_removed =
+    review_issues %>%
+    filter(result == "removed") %>%
+    select(-date_confirmed, -result),
   outside_collaborators =
     users(review_params$org, user_type = "outside_collaborators") %>%
     mutate(notes = NA)
