@@ -18,9 +18,9 @@ There are some GitHub users with access to organisation repositories who are not
 
 * Where users cannot be identified, contact the owners of the repositories they have access to to help with identification.
 
-* If SG employees do not respond to request to join the organisation by given deadline remove their access (with option to request to join at a later date).
+* If SG employees do not respond to request to join the organisation by given deadline, remove their access (with option to request to join at a later date).
 
-* Record any non-SG employees with a legitimate access need who will continue to be outside collaborators.
+* Keep a record (on eRDM) of any non-SG employees with a legitimate access need who will continue to be outside collaborators.
 
 ## Membership
 
@@ -32,9 +32,11 @@ All members need to actively respond to the review to confirm that they need ong
 
 ### Tasks
 
-* Ensure the `org-admin-all-members` team has write access to the `ghadmin` repository (this repository).
+* Ensure the `org-admin-all-members` team has write access to the [ghadmin repository](https://github.com/ScotGovAnalysis/ghadmin) (this repository).
 
-* Review message templates in the `templates` folder. These will be used for issue comments.
+* Review message templates in the `templates` folder. These will be used for communications with members.
+
+* Update `review_params` in `00_setup.R` with relevant information / dates. 
 
 * Run `02_review-members.R` to open a membership review issue in the `ghadmin` repository for each organisation member.
 
