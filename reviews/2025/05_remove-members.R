@@ -74,4 +74,29 @@ write_rds(
 )
 
 
+# 5 - Create file to save to eRDM ----
+
+erdm <- list(
+  members_responded =
+    review_issues %>%
+    filter(result == "responded") %>%
+    select(-date_removed, -result),
+  members_removed =
+    review_issues %>%
+    filter(result == "removed") %>%
+    select(-date_confirmed, -result),
+  outside_collaborators =
+    users(review_params$org, user_type = "outside_collaborators") %>%
+    mutate(notes = NA)
+)
+
+# Save xlsx file
+# TO DO: Add notes to outside_collaborators sheet to explain who users are.
+
+write_xlsx(
+  erdm,
+  here("reviews", "2025", "data", "2025_github-member-review.xlsx")
+)
+
+
 ### END OF SCRIPT ###

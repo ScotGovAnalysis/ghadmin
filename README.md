@@ -10,6 +10,9 @@ To check whether you have a PAT stored, run `gh::gh_token()`. If a PAT can't be 
 
 More information is available in the [gh documentation](https://gh.r-lib.org/articles/managing-personal-access-tokens.html).
 
+## Process
+
+An [outline of the process](reviews/review-process.md) followed for previous membership reviews can be found in the `reviews` folder.
 
 ## Licence
 
